@@ -369,6 +369,29 @@ document.getElementById("exportJsonBtn").addEventListener("click", () => {
     URL.revokeObjectURL(url);
 });
 
+// JSON 読み込み（インポート）
+document.getElementById("importJsonBtn")?.addEventListener("click", () => {
+    document.getElementById("importJsonInput").click();
+});
+
+document.getElementById("importJsonInput")?.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const json = JSON.parse(e.target.result);
+            localStorage.setItem("myQuestions", JSON.stringify(json));
+            alert("JSONを読み込みました！");
+            location.reload(); // リロードして反映
+        } catch (err) {
+            alert("JSONの読み込みに失敗しました");
+        }
+    };
+    reader.readAsText(file);
+});
+
 // 🔽 GitHub の JSON を読み込んで localStorage に保存する機能
 async function loadMyQuestionsFromGitHub() {
     const url = "https://yuno716.github.io/-/myquestions.json";
