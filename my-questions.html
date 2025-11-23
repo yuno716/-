@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>マイ問題集 - 機械保全技能士２級</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>マイ問題集</h1>
+    <nav>
+      <a href="index.html">トップ</a>
+      <a href="quiz.html">出題</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>新しい問題を追加</h2>
+    <form id="addQuestionForm">
+      <label>問題区分：</label>
+      <select id="questionType">
+        <option value="gakka">学科（○×・4択）</option>
+        <option value="jitsugi">実技（画像＋原因／対策）</option>
+      </select>
+
+      <label>問題文：</label>
+      <textarea id="questionText" rows="4" required></textarea>
+
+      <!-- 学科用 -->
+      <div id="choicesContainer">
+        <h4>選択肢（4択または○×）</h4>
+        <div class="choice-grid">
+          <input type="text" id="choiceA" placeholder="Aの選択肢">
+          <input type="text" id="choiceB" placeholder="Bの選択肢">
+          <input type="text" id="choiceC" placeholder="Cの選択肢">
+          <input type="text" id="choiceD" placeholder="Dの選択肢">
+        </div>
+        <label>正解：</label>
+        <input type="text" id="answerInput" placeholder="例：A または ○" />
+      </div>
+
+      <!-- 実技用 -->
+      <div id="jitsugiContainer" style="display:none;">
+        <h3>実技問題</h3>
+        <label>画像：</label>
+        <input type="file" id="imageInput" accept="image/*" /><br>
+        <img id="previewImage" style="max-width:200px; display:none; margin-top:5px;">
+
+        <label>原因の選択肢（A〜H）</label>
+        <div class="choice-grid">
+          <input id="causeA" placeholder="A" />
+          <input id="causeB" placeholder="B" />
+          <input id="causeC" placeholder="C" />
+          <input id="causeD" placeholder="D" />
+          <input id="causeE" placeholder="E" />
+          <input id="causeF" placeholder="F" />
+          <input id="causeG" placeholder="G" />
+          <input id="causeH" placeholder="H" />
+        </div>
+
+        <label>対策の選択肢（1〜8）</label>
+        <div class="choice-grid">
+          <input id="fix1" placeholder="1" />
+          <input id="fix2" placeholder="2" />
+          <input id="fix3" placeholder="3" />
+          <input id="fix4" placeholder="4" />
+          <input id="fix5" placeholder="5" />
+          <input id="fix6" placeholder="6" />
+          <input id="fix7" placeholder="7" />
+          <input id="fix8" placeholder="8" />
+        </div>
+
+        <label>正しい原因（A〜Hで入力）</label>
+        <input id="answerInputCause" placeholder="例：C" />
+
+        <label>正しい対策（1〜8で入力）</label>
+        <input id="answerInputFix" placeholder="例：3" />
+      </div>
+
+      <label>解説：</label>
+      <textarea id="explanationInput" rows="4"></textarea>
+
+      <button type="submit">追加</button>
+    </form>
+
+    <hr />
+    <h2>登録済み問題一覧</h2>
+    <div class="filter-box">
+      <label>表示区分：</label>
+      <select id="filterType">
+        <option value="all">すべて</option>
+        <option value="gakka">学科のみ</option>
+        <option value="jitsugi">実技のみ</option>
+      </select>
+
+      <label>検索：</label>
+      <input type="text" id="searchInput" placeholder="キーワードを入力">
+    </div>
+
+    <ul id="questionList" class="question-list"></ul>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

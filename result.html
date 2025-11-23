@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>結果発表</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="result-container container">
+    <h1>結果発表</h1>
+    <p id="scoreText"></p>
+    <h2>間違えた問題一覧</h2>
+    <ul id="wrongList"></ul>
+    <button onclick="location.href='index.html'">トップへ戻る</button>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const result = JSON.parse(localStorage.getItem("quizResult") || "{}");
+      const scoreElem = document.getElementById("scoreText");
+      const wrongList = document.getElementById("wrongList");
+
+      if (!result.total) {
+        scoreElem.textContent = "結果データがありません。";
+        return;
+      }
+
+      const percent = ((result.score / result.total) * 100).toFixed(1);
+      scoreElem.textContent = `あなたの得点：${result.total}問中 ${result.score}問正解（${percent}%）`;
+
+      wrongList.innerHTML = "";
+      if (result.wrong && result.wrong.length > 0) {
+        result.wrong.forEach((q) => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <strong>${q.question || "（問題文なし）"}</strong><br>
+            <small>正解：${q.answer || (q.answerCause ? q.answerCause + " / " + q.answerFix : "―")}</small>
+          `;
+          wrongList.appendChild(li);
+        });
+      } else {
+        wrongList.innerHTML = "<li>全問正解です！🎉</li>";
+      }
+    });
+  </script>
+</body>
+</html>
