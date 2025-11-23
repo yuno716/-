@@ -347,3 +347,41 @@ if (isMyQuestionsPage()){
 if (isResultPage()){
   (function initResult(){ const resultObj = JSON.parse(localStorage.getItem('quizResult') || '{}'); const scoreText = document.getElementById('scoreText'); const wrongListElem = document.getElementById('wrongList'); if (!resultObj || !resultObj.total){ scoreText.textContent = '結果データがありません。'; return; } const percent = ((resultObj.score / resultObj.total) * 100).toFixed(1); scoreText.textContent = `あなたの得点：${resultObj.total}問中 ${resultObj.score}問正解（${percent}%）`; wrongListElem.innerHTML = ''; if (resultObj.wrong && resultObj.wrong.length > 0){ resultObj.wrong.forEach(w => { const li = document.createElement('li'); li.innerHTML = `<strong>${w.question || '(問題文なし)'}</strong><br><small>正解：${w.answer || (w.answerCause ? (w.answerCause + ' / ' + w.answerFix) : '―')}</small>`; wrongListElem.appendChild(li); }); } else { wrongListElem.innerHTML = '<li>全問正解です！🎉</li>'; } })();
 }
+
+document.getElementById("exportJsonBtn").addEventListener("click", () => {
+    const data = JSON.parse(localStorage.getItem("myQuestions") || "[]");
+
+    if (data.length === 0) {
+        alert("エクスポートできる問題データがありません！");
+        return;
+    }
+
+    const jsonStr = JSON.stringify(data, null, 2);
+
+    const blob = new Blob([jsonStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "myquestions.json";
+    a.click();
+
+    URL.revokeObjectURL(url);
+});
+
+// 🔽 GitHub の JSON を読み込んで localStorage に保存する機能
+async function loadMyQuestionsFromGitHub() {
+    const url = "https://yuno716.github.io/-/myquestions.json";
+
+    try {
+        const response = await fetch(url + "?t=" + Date.now()); 
+        const data = await response.json();
+
+        // JSON を localStorage に保存
+        localStorage.setItem("myQuestions", JSON.stringify(data));
+
+        console.log("GitHub の JSON を読み込みました！");
+    } catch (err) {
+        console.error("JSON読み込みエラー：", err);
+    }
+}
