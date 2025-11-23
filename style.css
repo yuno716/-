@@ -242,4 +242,12 @@ button:hover {
   .choice-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  #questionText {
+  font-size: 18px !important;
+  font-weight: normal;
+  line-height: 1.5;
+  }
+  #choices button {
+    font-size: 16px !important;
+  }
 }
